@@ -1,100 +1,72 @@
-const MAX_POKEMON = 151;
-const listWrapper = document.querySelector('.list-wrapper');
-const searchInput = document.querySelector('#search-input');
-const numberFilter = document.querySelector('#number');
-const nameFilter = document.querySelector('#name');
-const notFoundMessage = document.querySelector('#not-found-message');
+let currentPokemonId = null;
 
-let allPokemons = [];
+document.addEventListener("DOMContentLoaded", () => {
+    const MAX_POKEMONS = 151;
+    const pokemonID = new URLSearchParams(window.location.search).get("id");
+    const id = parseInt(pokemonID, 10);
 
-fetch(`https://pokeapi.co/api/v2/pokemon?limit=${MAX_POKEMON}`)
-.then((response) => response.json())
-.then((data) => {
-    allPokemons = data.results;
-    displayPokemons(allPokemons);
+    if (id < 1 || id > MAX_POKEMONS) {
+        return (window.location.href = "./index.html");
+    }
+
+    currentPokemonId = id;
+    loadPokemon(id);
 });
 
-async function fetchPokemonDataBeforeRedirect(id) {
+async function loadPokemon(id) {
     try {
         const [pokemon, pokemonSpecies] = await Promise.
-        all([
-            fetch(`https://pokeapi.co/api/v2/pokemon?limit=${id}`)
-            .then(((res) => {
-                res.json()
-            }),
-            fetch(`https://pokeapi.co/api/v2/pokemon-species?limit=${id}`)
-            .then((res) => {
-                res.json();
-            })
-            ),
-        ])
-        return true
-    } catch(error) {
-        console.error("Failed to fetch Pokemon data before redirect")
-    }
-}
+            all([
+                fetch(`https://pokeapi.co/api/v2/pokemon?limit=${id}`)
+                    .then(((res) => {
+                        res.json()
+                    }),
+                        fetch(`https://pokeapi.co/api/v2/pokemon-species?limit=${id}`)
+                            .then((res) => {
+                                res.json();
+                            })
+                    ),
+            ]);
 
-function displayPokemons(pokemon) {
-    listWrapper.innerHTML = "";
+        const abilitiesWrapper = document.querySelector(
+            ".pokemon-detail-wrap .pokemon-detail.move"
+        );
+        abilitiesWrapper.innerHTML = "";
 
-    pokemon.forEach(pokemon => {
-        const pokemonID = pokemon.url.split("/")[6];
-        const listItem = document.createElement("div");
-        listItem.className = "list-item";
-        listItem.innerHTML = `
-            <div class="number-wrap">
-                <p class="caption-fonts">
-                    #${pokemonID}
-                </p>
-            </div>
-                <div class="img-wrap">
-                    <img 
-                        src="https://raw.githubusercontent.com/pokeapi/sprites/master/sprites/pokemon/other/dream-world/${pokemonID}.svg" 
-                        alt="${pokemon.name}" 
-                        />
-                </div>
-            <div class="name-wrap">
-                <p class="body3-fonts">${pokemon.name}</p>
-            </div>
-        `;
+        if (currentPokemonId === id) {
+            displayPokemonsDetails(pokemon);
+            const flavorText = getEnglishFlavorText
+                (pokemonSpecies);
+            document.querySelector(".body3-fonts.pokemon-description").textContent =
+                flavorText;
 
-        listItem.addEventListener("click", async () => {
-            const success = await fetchPokemonDataBeforeRedirect(pokemonID);
-            if(success) {
-                window.location.href = `./detail.html?id=${pokemonID}`;
+            const [leftArrow, rightArrow] = ["#leftArrow", "#rightArrow"]
+                .map((sel) => {
+                    document.querySelector(sel);
+                });
+
+            leftArrow.removeEventListener("click", navigatePokemon);
+            rightArrow.removeEventListener("click", navigatePokemon);
+
+            if (id !== 1) {
+                leftArrow.addEventListener("click", () => {
+                    navigatePokemon(id - 1);
+                })
             }
-        });
+            if (id !== 151) {
+                rightArrow.addEventListener("click", () => {
+                    navigatePokemon(id + 1);
+                })
+            }
+        }
 
-        listWrapper.appendChild(listItem);
-    });
-
-}
-
-searchInput.addEventListener("keyup", handleSearch);
-
-function handleSearch() {
-    const searchTerm = searchInput.value.toLowerCase();
-    let filteredPokemons;
-
-    if(numberFilter.checked) {
-        filteredPokemons = allPokemons.filter((pokemon) => {
-            const pokemonID = pokemon.url.split("/")[6];
-            return pokemonID.startsWith(searchTerm);
-        })
-    } else if(nameFilter.checked) {
-        filteredPokemons = allPokemons.filter((pokemon) => {
-            return pokemon.name.toLowerCase().startsWith(searchTerm);
-        });
-    } else {
-        filteredPokemons = allPokemons;
+        // continue here 
+        
+        return true
     }
-
-    displayPokemons(filteredPokemons);
-
-    if(filteredPokemons.length === 0) {
-        notFoundMessage.style.display = "block";
-    }else {
-        notFoundMessage.style.display = "none";
+    catch (error) {
+        console.error("An error ocurred while fetching Pokemon data", error);
+        return false;
     }
 }
 
