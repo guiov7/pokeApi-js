@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadPokemon(id) {
   try {
-    const [pokemon, pokemonSpecies] = await Promise.all([
+    const [ pokemon, pokemonSpecies ] = await Promise.all([
       fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then((res) =>
         res.json()
       ),
