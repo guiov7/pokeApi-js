@@ -20,17 +20,21 @@
     <!-- Our CSS -->
     <link rel="stylesheet" href="./assets/css/global.css">
     <link rel="stylesheet" href="./assets/css/pokedex.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <!-- defered js -->
     <script src="./assets/js/poke-api.js" defer></script>
+    <script src="./assets/js/search.js"></script>
 </head>
 <body>
     <main class="main">
-        <header class="header-home">
+        <header class="header home">
             <div class="container">
                 <div class="logo-wrapper">
                     <img src="./assets/img/pokeball.svg" alt="pokeball">
                     <h1>Pokedex</h1>
                 </div>
+            <div>
+
                 <div class="search-wrapper">
                     <div class="search-wrap">
                         <img class="search-icon" src="./assets/img/search.svg" alt="search icon">
@@ -38,23 +42,24 @@
                         <img id="search-close-icon" class="search-close-icon" src="./assets/img/cross.svg"
                         alt="cross-icon" />
                     </div>
-                </div>
-                <div class="sort-wrapper">
-                    <div class="sort-wrap">
-                        <img id="sort-icon" class="sort-icon" src="./assets/img/sorting.svg" alt="sorting"
-                        />
-                    </div>
-                    
-                    <div class="filter-wrapper">
-                        <p class="body2-fonts">Sort by:</p>
-                        <div class="filter-wrap">
-                            <div>
-                                <input id="number" type="radio" name="filters" value="number" checked />
-                                <label class="body3-fonts" for="number">Number</label>
-                            </div>
-                            <div>
-                                <input id="name" type="radio" name="filters" value="name" />
-                                <label class="body3-fonts" for="name">Name</label>
+                <div class="sf-div">
+                    <div class="sort-wrapper">
+                        <div class="sort-wrap">
+                            <img id="sort-icon" class="sort-icon" src="./assets/img/sorting.svg" alt="sorting"
+                            />
+                        </div>
+                        
+                        <div class="filter-wrapper">
+                            <p class="body2-fonts">Sort by:</p>
+                            <div class="filter-wrap">
+                                <div>
+                                    <input id="number" type="radio" name="filters" value="number" checked />
+                                    <label class="body3-fonts" for="number">Number</label>
+                                </div>
+                                <div>
+                                    <input id="name" type="radio" name="filters" value="name" />
+                                    <label class="body3-fonts" for="name">Name</label>
+                                </div>
                             </div>
                         </div>
                     </div>
