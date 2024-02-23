@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokemon Detail</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
     <script src="./assets/js/pokemon-model.js" defer></script>
 </head>
 <body>
@@ -62,36 +63,9 @@
                     </div>
                 </div>
             </div>
-            <p class="body3-fonts pokemons-description"></p>
+            <p class="body3-fonts pokemon-description"></p>
             <p class="body2-fonts about-text">Base Stats</p>
-            <div class="stats-wrapper">
-                <div class="stats-wrap" data-stat="hp">
-                    <p class="body3-fonts stats">HP</p>
-                    <p class="body3-fonts"></p>
-                    <progress value="" max="100" class="progress-bar"></progress>
-                </div>
-            </div>
-            <div class="stats-wrapper">
-                <div class="stats-wrap" data-stat="atk">
-                    <p class="body3-fonts stats">ATK</p>
-                    <p class="body3-fonts"></p>
-                    <progress value="" max="100" class="progress-bar"></progress>
-                </div>
-            </div>
-            <div class="stats-wrapper">
-                <div class="stats-wrap" data-stat="def">
-                    <p class="body3-fonts stats">DEF</p>
-                    <p class="body3-fonts"></p>
-                    <progress value="" max="100" class="progress-bar"></progress>
-                </div>
-            </div>
-            <div class="stats-wrapper">
-                <div class="stats-wrap" data-stat="stak">
-                    <p class="body3-fonts stats">SATK</p>
-                    <p class="body3-fonts"></p>
-                    <progress value="" max="100" class="progress-bar"></progress>
-                </div>
-            </div>
+            <div class="stats-wrapper"> <!-- JS will create elements here --></div>
             <img src="./assets/img/pokedex.svg" alt="pokedex" class="detail-bg" />
         </div>
     </main>
